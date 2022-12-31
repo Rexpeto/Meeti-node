@@ -1,6 +1,7 @@
 import express from "express";
 import dotenv from 'dotenv';
 import path from "path";
+import expressEjsLayouts from "express-ejs-layouts";
 import rutas from "./routes/index.js";
 
 //? Creando app
@@ -10,6 +11,7 @@ const app = express();
 dotenv.config({path: '.env'});
 
 //? Habilitar EJS
+app.use(expressEjsLayouts);
 app.set('view engine', 'ejs');
 
 //? Estableciendo ruta de vistas
