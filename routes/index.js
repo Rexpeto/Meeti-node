@@ -1,9 +1,13 @@
 import { Router } from "express";
+import { inicio } from "../controllers/homeController.js";
+import { login, register } from "../controllers/authController.js";
 
 const router = Router();
 
-router.get('/', (req, res) => res.render('home'));
+router.get('/', inicio);
 
-router.get('/register', (req, res) => res.send('Crear cuenta'));
+router.get('/register', register);
+
+router.get('/login', login);
 
 export default router;
