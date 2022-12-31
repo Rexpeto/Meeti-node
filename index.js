@@ -3,9 +3,13 @@ import dotenv from 'dotenv';
 import path from "path";
 import expressEjsLayouts from "express-ejs-layouts";
 import rutas from "./routes/index.js";
+import { db } from "./config/db.js";
 
 //? Creando app
 const app = express();
+
+//? Conexión a la base de datos
+db.sync().then(() => console.log('Conectado a la BD 💻'));
 
 //? Configuración de dotenv
 dotenv.config({path: '.env'});
