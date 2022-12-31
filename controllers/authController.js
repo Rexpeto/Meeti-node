@@ -1,7 +1,13 @@
 import express from 'express';
 
-export const inicio = (req, res) => {
-    res.render('home', {
-        pagina: 'inicio'
+export const register = (req, res) => {
+    res.render('register', {
+        pagina: 'Registro'
+    })
+}
+
+export const login = (req, res) => {
+    res.render('login', {
+        pagina: 'Iniciar sesión'
     })
 }
