@@ -1,9 +1,9 @@
 import express from "express";
 import dotenv from 'dotenv';
-import path from "path";
 import expressEjsLayouts from "express-ejs-layouts";
 import rutas from "./routes/index.js";
-import { db } from "./config/db.js";
+import db from "./config/db.js";
+import Usuarios from "./models/Usuarios.js";
 
 //? Creando app
 const app = express();
