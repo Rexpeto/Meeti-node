@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
 import expressEjsLayouts from "express-ejs-layouts";
 import rutas from "./routes/index.js";
 import db from "./config/db.js";
@@ -13,6 +14,10 @@ db.sync().then(() => console.log('Conectado a la BD 💻'));
 
 //? Configuración de dotenv
 dotenv.config({path: '.env'});
+
+//? Habilitar body parser
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 //? Habilitar EJS
 app.use(expressEjsLayouts);
