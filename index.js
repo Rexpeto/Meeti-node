@@ -1,6 +1,9 @@
 import express from "express";
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
+import flash from 'connect-flash';
+import session from 'express-session';
+import cookieParser from 'cookie-parser';
 import expressEjsLayouts from "express-ejs-layouts";
 import rutas from "./routes/index.js";
 import db from "./config/db.js";
@@ -28,6 +31,25 @@ app.set('views', './views');
 
 //? Static Files
 app.use(express.static('public'));
+
+//? Habiliar cookie parser
+app.use(cookieParser());
+
+//? Crear sesión
+app.use(session({
+    secret: process.env.secret,
+    key: process.env.key,
+    resave: false,
+    saveUninitialized: false
+}));
+
+//? Agrega flash messages
+app.use(flash());
+
+app.use((req, res, next) => {
+    res.locals.mensajes = req.flash();
+    next();
+})
 
 //? Utilización de rutas
 app.use('/', rutas);
