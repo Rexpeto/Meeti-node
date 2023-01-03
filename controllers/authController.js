@@ -1,4 +1,3 @@
-import express from 'express';
 import Usuarios from '../models/Usuarios.js'
 
 export const register = (req, res) => {
@@ -17,8 +16,15 @@ export const login = (req, res) => {
 export const crearUsuario = async (req, res) => {
     const user = req.body;
 
-    const usuario = await Usuarios.create(user);
+    try {
+        const usuario = await Usuarios.create(user);
 
-    //TODO: Flash Message y redireccionar 
-    console.log(`Usuario creado correctamente:`, usuario);
+        //TODO: Flash Message y redireccionar 
+        console.log(`Usuario creado correctamente:`, usuario);
+    } catch (error) {
+        const errores = error.errors.map(err => err.message);
+
+        req.flash('error', errores);
+        res.redirect('/register');
+    }
 }
