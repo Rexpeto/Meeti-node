@@ -15,27 +15,27 @@ export const login = (req, res) => {
 
 //? Crea un nuevo usuario en la db
 export const crearUsuario = async (req, res) => {
-    const user = req.body;
-
-    console.log(user.password);
-
     try {
+        const user = req.body;
         const usuario = await Usuarios.create(user);
 
         //? Flash Message y redireccionar 
         req.flash('exito', 'Hemos enviado un correo electronico de verificación');
-        req.redirect('/login');
+        res.redirect('/login');
     } catch (error) {
-        const errores = error.errors.map(err => err.message);
-        const resultado = validationResult(req).errors;
+        if(error) {
+            const errores = error.errors ? error.errors.map(err => err.message) : '';
+            const resultado = validationResult(req).errors;
 
-        const errExp = resultado.map(err => err.msg);
+            const errExp = resultado.map(err => err.msg);
 
-        const listaErrores = [...errores, ...errExp];
+            const listaErrores = [...errores, ...errExp];
 
-        console.log(listaErrores);
-
-        req.flash('error', listaErrores);
-        res.redirect('/register');
+            if(!listaErrores) {
+                req.flash('error', listaErrores);
+            }
+            res.redirect('/register');
+        }
+        
     }
 }
