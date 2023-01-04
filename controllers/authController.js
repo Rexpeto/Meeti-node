@@ -22,8 +22,9 @@ export const crearUsuario = async (req, res) => {
     try {
         const usuario = await Usuarios.create(user);
 
-        //TODO: Flash Message y redireccionar 
-        console.log(`Usuario creado correctamente:`, usuario);
+        //? Flash Message y redireccionar 
+        req.flash('exito', 'Hemos enviado un correo electronico de verificación');
+        req.redirect('/login');
     } catch (error) {
         const errores = error.errors.map(err => err.message);
         const resultado = validationResult(req).errors;
