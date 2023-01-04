@@ -32,7 +32,7 @@ app.set('views', './views');
 //? Static Files
 app.use(express.static('public'));
 
-//? Habiliar cookie parser
+//? Habilitar cookie parser
 app.use(cookieParser());
 
 //? Crear sesión
