@@ -1,3 +1,4 @@
+import { body, validationResult } from 'express-validator'
 import Usuarios from '../models/Usuarios.js'
 
 export const register = (req, res) => {
@@ -16,6 +17,8 @@ export const login = (req, res) => {
 export const crearUsuario = async (req, res) => {
     const user = req.body;
 
+    console.log(user.password);
+
     try {
         const usuario = await Usuarios.create(user);
 
@@ -23,8 +26,15 @@ export const crearUsuario = async (req, res) => {
         console.log(`Usuario creado correctamente:`, usuario);
     } catch (error) {
         const errores = error.errors.map(err => err.message);
+        const resultado = validationResult(req).errors;
 
-        req.flash('error', errores);
+        const errExp = resultado.map(err => err.msg);
+
+        const listaErrores = [...errores, ...errExp];
+
+        console.log(listaErrores);
+
+        req.flash('error', listaErrores);
         res.redirect('/register');
     }
 }
