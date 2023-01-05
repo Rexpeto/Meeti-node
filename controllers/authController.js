@@ -53,3 +53,29 @@ export const crearUsuario = async (req, res) => {
         console.log(error);
     }
 }
+
+//? Confirma la cuenta
+export const confirmarC = async (req, res, next) => {
+    const {email} = req.params;
+
+    try {
+        //* Verficiar si existe el usuario
+        const usuario = await Usuarios.findOne({where: {email}});
+
+        //* Sino existe, enviarlo a login
+        if(!usuario) {
+            req.flash('error', 'No existe esa cuenta');
+            res.redirect('/register');
+            return next();
+        }
+
+        //* si existe, confirmarlo en db
+        usuario.activo = 1;
+        await usuario.save();
+
+        req.flash('exito', 'Confirmado exito');
+        res.redirect('/login');
+    } catch (error) {
+        console.log(error);
+    }
+}
