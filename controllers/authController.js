@@ -1,5 +1,6 @@
-import { body, validationResult } from 'express-validator'
+import { validationResult } from 'express-validator'
 import Usuarios from '../models/Usuarios.js'
+import { enviarEmail } from '../handlers/email.js'
 
 export const register = (req, res) => {
     res.render('register', {
@@ -19,9 +20,20 @@ export const crearUsuario = async (req, res) => {
         const user = req.body;
         const usuario = await Usuarios.create(user);
 
-        //? Flash Message y redireccionar 
+        //* Generar url de confirmación
+        const url = `https://${req.headers.host}/confirmar-cuenta/${usuario.email}`;
+
+        //* Enviar correo de confirmación
+        await enviarEmail({
+            usuario: user,
+            url,
+            subject: 'Confirma tu cuenta de Meeti',
+            archivo: 'confirmar-cuenta'
+        });
+
+        //* Flash Message y redireccionar 
         req.flash('exito', 'Hemos enviado un correo electronico de verificación');
-        res.redirect('/login');
+        return res.redirect('/login');
     } catch (error) {
         if(error) {
             const errores = error.errors ? error.errors.map(err => err.message) : '';
@@ -34,8 +46,10 @@ export const crearUsuario = async (req, res) => {
             if(!listaErrores) {
                 req.flash('error', listaErrores);
             }
+
             res.redirect('/register');
         }
         
+        console.log(error);
     }
 }
