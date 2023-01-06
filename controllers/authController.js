@@ -1,6 +1,7 @@
 import { validationResult } from 'express-validator'
 import Usuarios from '../models/Usuarios.js'
 import { enviarEmail } from '../handlers/email.js'
+import passport from 'passport'
 
 export const register = (req, res) => {
     res.render('register', {
@@ -79,3 +80,11 @@ export const confirmarC = async (req, res, next) => {
         console.log(error);
     }
 }
+
+//? Inicia sesión al usuario
+export const iniciarS = passport.authenticate('local', {
+    successRedirect: '/admininstracion',
+    failureRedirect: '/login',
+    failureFlash: true,
+    badRequestMessage: 'Ambos campos son obligatorios'
+});
