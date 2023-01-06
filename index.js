@@ -8,6 +8,7 @@ import expressEjsLayouts from "express-ejs-layouts";
 import rutas from "./routes/index.js";
 import db from "./config/db.js";
 import Usuarios from "./models/Usuarios.js";
+import passport from "./config/passport.js";
 
 //? Creando app
 const app = express();
@@ -42,6 +43,10 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }));
+
+//? Inicializar passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 //? Agrega flash messages
 app.use(flash());
