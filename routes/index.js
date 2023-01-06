@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { body } from "express-validator";
 import { inicio } from "../controllers/homeController.js";
-import { confirmarC, crearUsuario, login, register } from "../controllers/authController.js";
+import { confirmarC, crearUsuario, iniciarS, login, register } from "../controllers/authController.js";
 
 const router = Router();
 
@@ -18,5 +18,8 @@ crearUsuario);
 
 //? Confirma un usuario
 router.get('/confirmar-cuenta/:email', confirmarC);
+
+//? Inicia sesión
+router.post('/login', iniciarS);
 
 export default router;
