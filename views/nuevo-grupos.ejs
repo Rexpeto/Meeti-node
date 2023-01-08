@@ -1,0 +1,38 @@
+<main class="contenedor contenedor-formularios no-padding">
+    <h2><%- pagina %></h2>
+
+    <form class="default-form" method="post">
+        <div class="campo">
+            <label for="nombre">Nombre:</label>
+            <input type="text" name="nombre" id="nombre" placeholder="Nombre del grupo">
+        </div>
+        <div class="campo descripcion">
+            <label for="descripcion">Descripción:</label>
+            <div class="contenedor-editor">
+                <input type="hidden" name="descripcion" id="x">
+                <trix-editor input="x"></trix-editor>
+            </div>
+        </div>
+
+        <div class="campo">
+            <label for="categoria">Categoría:</label>
+            <select name="categoria" id="categoria">
+                <option value="" disabled selected>Seleccione</option>
+            </select>
+        </div>
+
+        <div class="campo">
+            <label for="imagen">Imagen:</label>
+            <input type="file" name="imagen" id="imagen">
+        </div>
+
+        <div class="campo">
+            <label for="web">Sitio Web:</label>
+            <input type="url" name="url" id="web" placeholder="Coloque su sitio web">
+        </div>
+
+        <div class="campo enviar">
+            <input type="submit" value="Crear grupo" class="btn btn-azul">
+        </div>
+    </form>
+</main>
