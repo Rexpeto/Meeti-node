@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { body } from "express-validator";
 import { inicio } from "../controllers/homeController.js";
-import { confirmarC, crearUsuario, iniciarS, login, register } from "../controllers/authController.js";
+import { Autenticacion, confirmarC, crearUsuario, iniciarS, login, register } from "../controllers/authController.js";
 import { adminPanel } from "../controllers/adminController.js";
 
 const router = Router();
@@ -24,6 +24,6 @@ router.get('/confirmar-cuenta/:email', confirmarC);
 router.post('/login', iniciarS);
 
 //? Panel de administración
-router.get('/administracion', adminPanel);
+router.get('/administracion', Autenticacion, adminPanel);
 
 export default router;
