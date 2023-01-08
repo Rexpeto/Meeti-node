@@ -1,4 +1,7 @@
 import { body, validationResult } from "express-validator";
+import multer from "multer";
+import shortid from "shortid";
+import path from 'path';
 import Categorias from "../models/Categorias.js";
 import Grupos from "../models/Grupos.js";
 
@@ -11,6 +14,36 @@ export const nuevoGrupo = async (req, res) => {
     });
 }
 
+//? Sube las imagenes de grupo
+const __dirname = path.resolve();
+const fileStorage = multer.diskStorage({
+    destination:(req, file, next) => {
+
+        next(null, `${__dirname}/public/uploads/grupos`);
+    },
+    filename: (req, file, next) => {
+        const extension = file.mimetype.split('/')[1];
+        next(null, `${shortid.generate()}.${extension}`);
+    }
+})
+
+//* Configuración de multer
+const configMulter = {
+    storage: fileStorage
+}
+
+const upload = multer(configMulter).single('imagen');
+
+export const subirImagen = async (req, res, next) => {
+    upload(req, res, function (error) {
+        if(error) {
+            console.log(error);
+        } else {
+            next();
+        }
+    })
+}
+
 //? Guarda los grupos
 export const guardarGrupo = async (req, res) => {
     //* Sanitizar
@@ -21,6 +54,7 @@ export const guardarGrupo = async (req, res) => {
     const grupo = req.body;
     grupo.UsuarioId = req.user.id;
     grupo.categoriaId = req.body.categoria;
+    grupo.imagen = req.file.filename;
 
     try {
         //* Almacena en la bd
