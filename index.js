@@ -9,6 +9,7 @@ import rutas from "./routes/index.js";
 import db from "./config/db.js";
 import Usuarios from "./models/Usuarios.js";
 import Categorias from "./models/Categorias.js";
+import Grupos from "./models/Grupos.js";
 import passport from "./config/passport.js";
 
 //? Creando app
