@@ -29,6 +29,7 @@ const fileStorage = multer.diskStorage({
 
 //* Configuración de multer
 const configMulter = {
+    limits: {filesize: 100000},
     storage: fileStorage
 }
 
@@ -37,7 +38,12 @@ const upload = multer(configMulter).single('imagen');
 export const subirImagen = async (req, res, next) => {
     upload(req, res, function (error) {
         if(error) {
-            console.log(error);
+            if(error instanceof multer.MulterError) {
+                if(error.code === 'LIMIT_FILE_SIZE') {
+                    req.flash('error', 'Imagen muy grande');
+                    res.redirect('/nuevo-grupo');
+                }
+            }
         } else {
             next();
         }
