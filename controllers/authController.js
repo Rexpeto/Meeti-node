@@ -83,7 +83,7 @@ export const confirmarC = async (req, res, next) => {
 
 //? Inicia sesión al usuario
 export const iniciarS = passport.authenticate('local', {
-    successRedirect: '/admininstracion',
+    successRedirect: '/administracion',
     failureRedirect: '/login',
     failureFlash: true,
     badRequestMessage: 'Ambos campos son obligatorios'
