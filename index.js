@@ -8,6 +8,7 @@ import expressEjsLayouts from "express-ejs-layouts";
 import rutas from "./routes/index.js";
 import db from "./config/db.js";
 import Usuarios from "./models/Usuarios.js";
+import Categorias from "./models/Categorias.js";
 import passport from "./config/passport.js";
 
 //? Creando app
