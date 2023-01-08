@@ -88,3 +88,12 @@ export const iniciarS = passport.authenticate('local', {
     failureFlash: true,
     badRequestMessage: 'Ambos campos son obligatorios'
 });
+
+//? Revisa si el usuario está logueado
+export const Autenticacion = (req, res, next) => {
+    if(req.isAuthenticated()) {
+        return next();
+    }
+
+    res.redirect('/login');
+}
