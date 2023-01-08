@@ -63,10 +63,10 @@ p {
 
 /** botones **/
 .btn {
-    padding: 1rem 4rem;
+    padding: .6rem 2rem;
     text-align: center;
     font-weight: 700;
-    font-size: 1.3rem;
+    font-size: 1rem;
     border: none;
     background-color: transparent;
     color:white;
