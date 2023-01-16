@@ -41,26 +41,20 @@
     <div class="seccion-admin">
         <h2>Tus Grupos</h2>
         <ul>
-            <li>
-                <div class="informacion-admin">
-                    <h3>BlockChain en Venezuela</h3>
-                </div>
-                <div class="acciones contenedor-botones">
-                    <a href="#" class="btn btn-azul2">Imagen</a>
-                    <a href="#" class="btn btn-verde">Editar</a>
-                    <a href="#" class="btn btn-rojo">Eliminar</a>
-                </div>
-            </li>
-            <li>
-                <div class="informacion-admin">
-                    <h3>Node.js en Venezuela</h3>
-                </div>
-                <div class="acciones contenedor-botones">
-                    <a href="#" class="btn btn-azul2">Imagen</a>
-                    <a href="#" class="btn btn-verde">Editar</a>
-                    <a href="#" class="btn btn-rojo">Eliminar</a>
-                </div>
-            </li>
+            <% if(grupos) { %> 
+                <% grupos.forEach(grupo => { %>
+                    <li>
+                        <div class="informacion-admin">
+                            <h3><%- grupo.nombre %></h3>
+                        </div>
+                        <div class="acciones contenedor-botones">
+                            <a href="/imagenG/<%- grupo.id %>" class="btn btn-azul2">Imagen</a>
+                            <a href="/editarG/<%- grupo.id %>" class="btn btn-verde">Editar</a>
+                            <a href="/eliminarG/<%- grupo.id %>" class="btn btn-rojo">Eliminar</a>
+                        </div>
+                    </li>
+                <% }); %>
+            <% } %>
         </ul>
     </div>
 </main>
