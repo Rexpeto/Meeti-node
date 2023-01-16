@@ -29,8 +29,16 @@ const fileStorage = multer.diskStorage({
 
 //* Configuración de multer
 const configMulter = {
-    limits: {filesize: 100000},
-    storage: fileStorage
+    limits: {filesize: 10000},
+    storage: fileStorage,
+    fileFilter: (req, file, next) => {
+        if(file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+            console.log('true en imagen')
+            next(null, true);
+        } else {
+            next(new Error('Formato no válido'), false);
+        }
+    }
 }
 
 const upload = multer(configMulter).single('imagen');
@@ -39,11 +47,17 @@ export const subirImagen = async (req, res, next) => {
     upload(req, res, function (error) {
         if(error) {
             if(error instanceof multer.MulterError) {
-                if(error.code === 'LIMIT_FILE_SIZE') {
-                    req.flash('error', 'Imagen muy grande');
-                    res.redirect('/nuevo-grupo');
+                if(code.error === 'LIMIT_FILE_SIZE') {
+                    req.flash('error', 'El archivo es demasiado grande');
+                } else {
+                    req.flash('error', error.message);
                 }
+            } else if(error.hasOwnProperty('message')) {
+                req.flash('error', error.message);
             }
+
+            res.redirect('back');
+            return;
         } else {
             next();
         }
@@ -60,7 +74,10 @@ export const guardarGrupo = async (req, res) => {
     const grupo = req.body;
     grupo.UsuarioId = req.user.id;
     grupo.categoriaId = req.body.categoria;
-    grupo.imagen = req.file.filename;
+    
+    if(req.file) {
+        grupo.imagen = req.file.filename;
+    }
 
     try {
         //* Almacena en la bd
