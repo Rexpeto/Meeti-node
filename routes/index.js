@@ -3,7 +3,7 @@ import { body } from "express-validator";
 import { inicio } from "../controllers/homeController.js";
 import { Autenticacion, confirmarC, crearUsuario, iniciarS, login, register } from "../controllers/authController.js";
 import { adminPanel } from "../controllers/adminController.js";
-import { editGroupForm, editGrupo, editImagen, eliminarGFrom, guardarGrupo, imagenGrupoForm, nuevoGrupo, subirImagen } from "../controllers/gruposControllers.js";
+import { editGroupForm, editGrupo, editImagen, eliminarGFrom, eliminarGrupo, guardarGrupo, imagenGrupoForm, nuevoGrupo, subirImagen } from "../controllers/gruposControllers.js";
 
 const router = Router();
 
@@ -47,5 +47,6 @@ router.post('/imagenG/:grupoId', Autenticacion, subirImagen, editImagen);
 
 //? Eliminar grupo
 router.get('/eliminarG/:grupoId', Autenticacion, eliminarGFrom);
+router.post('/eliminarG/:grupoId', Autenticacion, eliminarGrupo);
 
 export default router;
