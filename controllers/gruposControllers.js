@@ -224,3 +224,44 @@ export const eliminarGFrom = async (req, res, nex) => {
         console.log(error);
     }
 }
+
+//? Eliminar grupo
+export const eliminarGrupo = async (req, res, next) => {
+    try {
+        const grupo = await Grupos.findOne({where: {id: req.params.grupoId, UsuarioId: req.user.id}});
+
+        if(!grupo) {
+            req.flash('error', 'Oops! Ocurrio un error');
+            res.redirect('/administracion');
+            return next();
+        }
+
+        //* Si tiene una imagen
+        if(grupo.imagen) {
+            const __dirname = path.resolve();
+            const imagenAnteriorPath = `${__dirname}/public/uploads/grupos/${grupo.imagen}`;
+
+            //* Eliminar imagen
+            fs.unlink(imagenAnteriorPath, error => {
+                if(error) {
+                    console.log(error);
+                }
+
+                return;
+            });
+        }
+
+        //* Eliminar el grupo
+        await Grupos.destroy({
+            where: {
+                id: req.params.grupoId
+            }
+        });
+
+        req.flash('exito', 'Grupo eliminado con exito');
+        res.redirect('/administracion');
+
+    } catch (error) {
+        console.log(error);
+    }
+}
