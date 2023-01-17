@@ -150,7 +150,7 @@ export const editGrupo = async (req, res, next) => {
 //? Formulario para editar la imagen de grupo
 export const imagenGrupoForm = async (req, res) => {
     try {
-        const grupo = await Grupos.findByPk(req.params.grupoId);
+        const grupo = await Grupos.findOne({ where: { id: req.params.grupoId, UsuarioId: req.user.id } });
 
         res.render('imagen-grupo', {
             pagina: `Imagen del grupo ${grupo.nombre}`,
