@@ -203,3 +203,24 @@ export const editImagen = async (req, res, next) => {
         console.log(error);
     }
 }
+
+//? Formulario de eliminar grupo
+export const eliminarGFrom = async (req, res, nex) => {
+    try {
+        const grupo = await Grupos.findOne({ where: { id: req.params.grupoId, UsuarioId: req.user.id } });
+
+        //* Si el grupo no le pertenece
+        if(!grupo) {
+            req.flash('error', 'Oops! Ocurrio un error');
+            res.redirect('/administracion');
+            return next();
+        }
+
+        res.render('eliminar-grupo', {
+            pagina: `Eliminar el grupo ${grupo.nombre}`
+        });
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
