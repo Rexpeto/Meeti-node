@@ -97,3 +97,51 @@ export const guardarGrupo = async (req, res) => {
         res.redirect('/nuevo-grupo');
     }
 }
+
+//? Editar grupos
+export const editGroupForm = async (req, res) => {
+    //* Consultas
+    const consultas = [];
+    consultas.push(Grupos.findByPk(req.params.grupoId));
+    consultas.push(Categorias.findAll());
+
+    //* Promise de consultas
+    const [grupo, categorias] = await Promise.all(consultas);
+
+    res.render('editar-grupo', {
+        pagina: `Editar grupo ${grupo.nombre}`,
+        grupo,
+        categorias
+    });
+}
+
+//? Guarda los cambios en la BD
+export const editGrupo = async (req, res, next) => {
+    try {
+        const grupo = await Grupos.findOne({ where: { id: req.params.grupoId, UsuarioId: req.user.id } });
+
+        //* Si no es el dueño
+        if(!grupo) {
+            req.flash('error', 'Oops! Ocurrio un error');
+            res.redirect('/administracion');
+            return next();
+        }
+
+        //* Si todo está bien
+        const {nombre, descripcion, categoria, url} = req.body;
+
+        //* Asignar valores
+        grupo.nombre = nombre;
+        grupo.descripcion = descripcion;
+        grupo.url = url;
+        grupo.categoriaId = categoria;
+
+        //* Guardar los valores en la BD
+        await grupo.save();
+        req.flash('exito', 'Editado correctamente');
+        res.redirect('/administracion');
+
+    } catch (error) {
+        console.log(error);
+    }
+}
