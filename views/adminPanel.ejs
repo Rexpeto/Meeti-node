@@ -41,7 +41,7 @@
     <div class="seccion-admin">
         <h2>Tus Grupos</h2>
         <ul>
-            <% if(grupos) { %> 
+            <% if(grupos.length > 0) { %> 
                 <% grupos.forEach(grupo => { %>
                     <li>
                         <div class="informacion-admin">
