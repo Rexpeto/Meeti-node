@@ -145,3 +145,18 @@ export const editGrupo = async (req, res, next) => {
         console.log(error);
     }
 }
+
+//? Formulario para editar la imagen de grupo
+export const imagenGrupoForm = async (req, res) => {
+    try {
+        const grupo = await Grupos.findByPk(req.params.grupoId);
+
+        res.render('imagen-grupo', {
+            pagina: `Imagen del grupo ${grupo.nombre}`,
+            grupo
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
+}
