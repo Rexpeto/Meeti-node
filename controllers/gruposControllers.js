@@ -2,6 +2,7 @@ import { body, validationResult } from "express-validator";
 import multer from "multer";
 import shortid from "shortid";
 import path from 'path';
+import fs from 'fs';
 import Categorias from "../models/Categorias.js";
 import Grupos from "../models/Grupos.js";
 
@@ -155,6 +156,48 @@ export const imagenGrupoForm = async (req, res) => {
             pagina: `Imagen del grupo ${grupo.nombre}`,
             grupo
         });
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+//? Controlador para guardar la imagen editada en la BD
+export const editImagen = async (req, res, next) => {
+    try {
+        const grupo = await Grupos.findOne({ where: { id: req.params.grupoId, UsuarioId: req.user.id } });
+
+        //* Si no consigue el grupo
+        if(!grupo) {
+            req.flash('error', 'Oops! Ocurrio un error');
+            res.redirect('/administracion');
+            return next();
+        }
+
+        //* Si hay imagen anterior y nueva, hay que borrar
+        if(req.file && grupo.imagen) {
+            const __dirname = path.resolve();
+            const imagenAnteriorPath = `${__dirname}/public/uploads/grupos/${grupo.imagen}`;
+
+            //* Eliminar imagen anterior
+            fs.unlink(imagenAnteriorPath, error => {
+                if(error) {
+                    console.log(error);
+                }
+
+                return;
+            });
+        }
+
+        //* Almacenar imagen
+        if(req.file) {
+            grupo.imagen = req.file.filename;
+        }
+
+        //* Almacenar en la BD
+        await grupo.save();
+        req.flash('exito', 'Se edito la imagen del grupo con exito');
+        res.redirect('/administracion');
 
     } catch (error) {
         console.log(error);
