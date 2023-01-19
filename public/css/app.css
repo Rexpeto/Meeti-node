@@ -106,6 +106,15 @@ p {
     background-color: #92140C;
 }
 
+.campo.mapa {
+    display: block;
+}
+
+#mapa {
+    height: 600px;
+    width: 100%;
+}
+
 /** Grid **/
 .grid {
     display: grid;
