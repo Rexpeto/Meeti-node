@@ -41,6 +41,12 @@ const buscarDireccion = e => {
 
             //* Asignar a su contenedor
             markers.addLayer(marker);
+
+            //* Detectar moviemiento en el marker
+            marker.on('moveend', e => {
+                const {lat, lng} = e.target.getLatLng();
+                mapa.panTo(new L.LatLng(lat, lng));
+            })
         });
     }
 }
