@@ -19,9 +19,19 @@ const buscarDireccion = e => {
     if(e.target.value.length > 5) {
         //* Utilizar el provider
         const provider = new OpenStreetMapProvider();
-
+        
         provider.search({query: e.target.value}).then(result => {
-            console.log(result)
+            //* Mostrar ubicación en el mapa
+            mapa.setView(result[0].bounds[0], 13);
+
+            //* Agregar el pin
+            L.marker(result[0].bounds[0], {
+                draggable: true,
+                autoPan: true
+            })
+            .addTo(mapa)
+            .bindPopup(result[0].label)
+            .openPopup();
         });
     }
 }
