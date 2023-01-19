@@ -3,6 +3,8 @@ import { OpenStreetMapProvider } from "leaflet-geosearch";
 const lat = 10.60003150010103;
 const lng = -71.64964139210007;
 const mapa = L.map('mapa').setView([lat, lng ], 13);
+let markers = new L.FeatureGroup().addTo(mapa);
+let marker;
 
 document.addEventListener('DOMContentLoaded', () => {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -17,6 +19,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const buscarDireccion = e => {
     if(e.target.value.length > 5) {
+
+        //* Si existe un pin previo
+        markers.clearLayers();
+
         //* Utilizar el provider
         const provider = new OpenStreetMapProvider();
         
@@ -25,13 +31,16 @@ const buscarDireccion = e => {
             mapa.setView(result[0].bounds[0], 13);
 
             //* Agregar el pin
-            L.marker(result[0].bounds[0], {
+            marker = new L.marker(result[0].bounds[0], {
                 draggable: true,
                 autoPan: true
             })
             .addTo(mapa)
             .bindPopup(result[0].label)
             .openPopup();
+
+            //* Asignar a su contenedor
+            markers.addLayer(marker);
         });
     }
 }
